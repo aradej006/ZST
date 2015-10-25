@@ -16,6 +16,7 @@ public final class LogEntityTranslator {
         logEntity.setAtr2(logEntityDTO.getAtr2());
         logEntity.setAtr3(logEntityDTO.getAtr3());
         logEntity.setId(logEntityDTO.getId());
+        logEntity.setLogRegister(logEntityDTO.getLogRegister());
         return logEntity;
     }
 
@@ -27,6 +28,7 @@ public final class LogEntityTranslator {
         logEntityDTO.setAtr2(logEntity.getAtr2());
         logEntityDTO.setAtr3(logEntity.getAtr3());
         logEntityDTO.setId(logEntity.getId());
+        logEntityDTO.setLogRegister(logEntity.getLogRegister());
         return  logEntityDTO;
     }
 }

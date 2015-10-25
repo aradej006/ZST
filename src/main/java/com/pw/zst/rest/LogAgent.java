@@ -1,18 +1,13 @@
-package com.pw.zst.service;
+package com.pw.zst.rest;
 
 import com.pw.zst.DTO.LogEntityDTO;
-import com.pw.zst.repositories.LogEntityRepository;
-import com.pw.zst.translators.LogEntityTranslator;
-
-import javax.annotation.PostConstruct;
+import com.pw.zst.service.LogEntityService;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,18 +17,14 @@ import java.util.Map;
 public class LogAgent {
 
     @Inject
-    LogEntityRepository logEntityRepository;
+    LogEntityService logEntityService;
 
-    @PostConstruct
-    public void init(){
-        logEntityRepository.toString();
-    }
 
     @POST
     @Consumes("application/json")
     public Response saveLog(LogEntityDTO logEntityDTO){
         try{
-            logEntityRepository.save(LogEntityTranslator.toEntity(logEntityDTO));
+            logEntityService.save(logEntityDTO);
         }catch(ConstraintViolationException e){
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("error", e.getMessage());
@@ -41,6 +32,13 @@ public class LogAgent {
             return Response.status(Response.Status.BAD_REQUEST).entity(responseObj).build();
         }
         return Response.status(201).build();
+    }
+
+    @Path("/all")
+    @GET
+    @Produces("application/json")
+    public List<LogEntityDTO> findAll(){
+        return logEntityService.findAll();
     }
 
 }

@@ -17,6 +17,8 @@ public class LogEntityDTO {
 
     private String logType;
 
+    private String logRegister;
+
     private String atr1;
 
     private String atr2;
@@ -69,5 +71,26 @@ public class LogEntityDTO {
 
     public void setAtr3(String atr3) {
         this.atr3 = atr3;
+    }
+
+    public String getLogRegister() {
+        return logRegister;
+    }
+
+    public void setLogRegister(String logRegister) {
+        this.logRegister = logRegister;
+    }
+
+    @Override
+    public String toString() {
+        return "LogEntityDTO{" +
+                "id=" + id +
+                ", logDate=" + logDate +
+                ", logType='" + logType + '\'' +
+                ", logRegister='" + logRegister + '\'' +
+                ", atr1='" + atr1 + '\'' +
+                ", atr2='" + atr2 + '\'' +
+                ", atr3='" + atr3 + '\'' +
+                '}';
     }
 }

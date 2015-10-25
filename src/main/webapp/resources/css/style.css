@@ -1,0 +1,35 @@
+body{
+    min-height: 1020px;
+    background-color: #F2F2F2;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 50px, rgba(255, 255, 255, .5) 50px, rgba(255, 255, 255, .5) 100px);
+}
+.bluePaper {
+    padding: 50px;
+    padding-top: 60px;
+    background-color: rgb(193, 217, 237);
+    outline: 10px solid rgb(193, 217, 237);
+    border: 1px dashed #428BCA;
+    box-shadow: 14px 14px 10px rgba(81, 81, 81, 0.69);
+}
+.form-control {
+    border-color:  #639DCF;
+}
+.input-group-addon {
+    color: white !important;
+    background-color: #70A6D4 !important;
+    border-color:  #639DCF !important;
+}
+
+tr {
+    background-color: #DFE9F4 !important;
+}
+td {
+    border-color: #ACC2D5 !important;
+}
+table {
+    border-color: #ACC2D5 !important;
+}
+a {
+    color: #1587B5 !important;
+}
+body { padding-top:50px; }

@@ -26,6 +26,8 @@ public class LogEntity implements Serializable, Cloneable{
 
     private String atr3;
 
+    private String logRegister;
+
     public Long getId() {
         return id;
     }
@@ -74,6 +76,14 @@ public class LogEntity implements Serializable, Cloneable{
         this.atr3 = atr3;
     }
 
+    public String getLogRegister() {
+        return logRegister;
+    }
+
+    public void setLogRegister(String logRegister) {
+        this.logRegister = logRegister;
+    }
+
     @Override
     public String toString() {
         return "LogEntity{" +
@@ -83,6 +93,7 @@ public class LogEntity implements Serializable, Cloneable{
                 ", atr1='" + atr1 + '\'' +
                 ", atr2='" + atr2 + '\'' +
                 ", atr3='" + atr3 + '\'' +
+                ", logRegister='" + logRegister + '\'' +
                 '}';
     }
 }
