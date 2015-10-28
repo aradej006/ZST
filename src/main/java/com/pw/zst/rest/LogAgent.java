@@ -1,12 +1,16 @@
 package com.pw.zst.rest;
 
 import com.pw.zst.DTO.LogEntityDTO;
+import com.pw.zst.DTO.LogRegisterDTO;
 import com.pw.zst.service.LogEntityService;
+import com.pw.zst.service.LogRegisterService;
+
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +21,10 @@ import java.util.Map;
 public class LogAgent {
 
     @Inject
-    LogEntityService logEntityService;
+    private LogEntityService logEntityService;
 
+    @Inject
+    private LogRegisterService logRegisterService;
 
     @POST
     @Consumes("application/json")
@@ -39,6 +45,13 @@ public class LogAgent {
     @Produces("application/json")
     public List<LogEntityDTO> findAll(){
         return logEntityService.findAll();
+    }
+
+    @Path("/{registerName}/get")
+    @GET
+    @Produces("application/json")
+    public List<LogEntityDTO> findByRegisterName(@PathParam("registerName")String registerName){
+        return logEntityService.findByLogRegister(registerName);
     }
 
 }

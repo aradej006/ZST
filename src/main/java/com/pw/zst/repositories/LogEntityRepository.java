@@ -13,5 +13,6 @@ import java.util.List;
 public interface LogEntityRepository extends JpaRepository<LogEntity, Long>{
 
     List<LogEntity> findByLogType(String logType);
+    List<LogEntity> findByLogRegister(String logRegister);
 
 }

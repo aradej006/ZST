@@ -4,13 +4,11 @@ import com.pw.zst.DTO.LogEntityDTO;
 import com.pw.zst.entities.LogEntity;
 import com.pw.zst.repositories.LogEntityRepository;
 import com.pw.zst.translators.LogEntityTranslator;
-import sun.rmi.runtime.Log;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +20,7 @@ import java.util.List;
 public class LogEntityService {
 
     @Inject
-    private LogEntityRepository logEntityRepository;
+    LogEntityRepository logEntityRepository;
 
     @PostConstruct
     public void init(){
@@ -38,6 +36,14 @@ public class LogEntityService {
          for(LogEntity logEntity : logEntityRepository.findAll()){
              logEntityDTOList.add( LogEntityTranslator.toDTO(logEntity));
          }
+        return logEntityDTOList;
+    }
+
+    public List<LogEntityDTO> findByLogRegister(String logRegister){
+        List<LogEntityDTO> logEntityDTOList = new LinkedList<LogEntityDTO>();
+        for(LogEntity logEntity : logEntityRepository.findByLogRegister(logRegister)){
+            logEntityDTOList.add( LogEntityTranslator.toDTO(logEntity));
+        }
         return logEntityDTOList;
     }
 

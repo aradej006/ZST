@@ -1,35 +1,62 @@
 body{
-    min-height: 1020px;
-    background-color: #F2F2F2;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 50px, rgba(255, 255, 255, .5) 50px, rgba(255, 255, 255, .5) 100px);
-}
-.bluePaper {
-    padding: 50px;
-    padding-top: 60px;
-    background-color: rgb(193, 217, 237);
-    outline: 10px solid rgb(193, 217, 237);
-    border: 1px dashed #428BCA;
-    box-shadow: 14px 14px 10px rgba(81, 81, 81, 0.69);
-}
-.form-control {
-    border-color:  #639DCF;
-}
-.input-group-addon {
-    color: white !important;
-    background-color: #70A6D4 !important;
-    border-color:  #639DCF !important;
+    background-color: #F5F5F5;
+    padding-top:50px;
 }
 
+.form-control {
+    border-color:  #639DCF;
+    border-radius: 0;
+}
+
+.btn-primary {
+    border-radius: 0;
+    background-color: #a29fa5;
+}
+
+.input-group-addon {
+    color: white !important;
+    background-color: #a29fa5 !important;
+    border-color: #639DCF !important;
+}
 tr {
-    background-color: #DFE9F4 !important;
+    background-color: #E7E7E7 !important;
 }
 td {
-    border-color: #ACC2D5 !important;
+    border-color: #639DCF !important;
 }
+
+thead > tr > td {
+    background-color: rgb(198, 198, 198);
+    border-bottom-width: 0;
+}
+
 table {
-    border-color: #ACC2D5 !important;
+    border-color: #639DCF !important;
 }
 a {
-    color: #1587B5 !important;
+    color: #6B6B6B  !important;
 }
-body { padding-top:50px; }
+
+.table-bordered{
+    border : 0;
+}
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.well{
+    padding: 0;
+    margin-bottom:0;
+    border-radius: 0;
+    border:0;
+}
+
+.well-lg{
+    padding:0;
+}
+
+#addRegister{
+    width: 100%;
+}

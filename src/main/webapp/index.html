@@ -1,101 +1,128 @@
 <!doctype html>
 <html ng-app="logClient">
 <head>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+    <script src="resources/js/angular.min.js"></script>
+    <script src="resources/js/angular-animate.min.js"></script>
+    <script src="resources/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
     <script src="resources/js/logClient.js"></script>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="resources/css/style.css"/>
 </head>
 <body ng-controller="ctrl">
-    <div>
-        <button type="button" class="btn btn-primary" ng-click="send()">Send Log</button>
-    </div>
-
-    <div id="table">
-        <form>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-refresh" ng-click="getLogs()"></i></div>
-                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchLog">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" ng-init="collapsedSendLog = true">
+            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog;
+            log.logType=logTypes[0]; log.registerName=registerNames[0];refreshAttr(log.registerName)" value="Send Log"/>
+            <div uib-collapse="collapsedSendLog">
+                <div class="well well-lg">
+                    <select class="form-control" ng-options="r.registerName for r in registerNames" ng-model="log.registerName" ng-change="refreshAttr(log.registerName)"></select>
+                    <input type="number" min="0" class="form-control" ng-model="log.sourceId" placeholder="SourceId"/>
+                    <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logType"></select>
+                    <input ng-repeat="a in attr" type="text" class="form-control" ng-model="log[a]" placeholder="Attribute {{$index+1}}"/>
+                    <input style="width:100%" type="button" class="btn btn-primary" ng-click="send(log)" value="Add"/>
                 </div>
             </div>
-        </form>
+        </div>
+        <div class="col-md-4" ng-init="isCollapsed = true">
+            <input id="addRegister" type="button" class="btn btn-primary" ng-click="isCollapsed = !isCollapsed" value="Add Register"/>
+            <div uib-collapse="isCollapsed">
+                <div class="well well-lg">
+                    <input type="text" class="form-control" ng-model="newRegister.registerName" placeholder="Register Name" ng-change="validNewRegister(newRegister)"/>
+                    <input type="number" min="1" max="10" class="form-control" ng-model="newRegister.attributesQuantity" ng-change="validNewRegister(newRegister)" placeholder="Attributes Quantity"/>
+                    <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="invalidRegisterMessage!=''" ng-click="addNewRegister(newRegister)" value="Add"/>
+                    <b ng-show="invalidRegisterMessage != ''" style="color: red">{{invalidRegisterMessage}}</b>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" ng-init="collapsedLogType = true">
+            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedLogType=!collapsedLogType" value="Add Log Type"/>
+            <div uib-collapse="collapsedLogType">
+                <div class="well well-lg">
+                    <input type="text" class="form-control" ng-model="newType" placeholder="Log Type Name"/>
+                    <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="newType=='' || newType==undefined" ng-click="addLogType(newType)" value="Add "/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            <select class="form-control" ng-options="register.registerName for register in registerNames"
+                    ng-model="registerName" ng-change="getLogRegistry()"></select>
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="Search..." ng-model="searchLog">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped">
 
-        <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>
+                        <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                            Id
+                            <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'logType'; sortReverse = !sortReverse">
+                            Log Type
+                            <span ng-show="sortType == 'logType' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'logType' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'sourceId'; sortReverse = !sortReverse">
+                            Source Id
+                            <span ng-show="sortType == 'sourceId' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'sourceId' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'logRegister'; sortReverse = !sortReverse">
+                            Log Register
+                            <span ng-show="sortType == 'logRegister' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'logRegister' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'logDate'; sortReverse = !sortReverse">
+                            Log Date
+                            <span ng-show="sortType == 'logDate' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'logDate' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
 
-            <thead>
-            <tr>
-                <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
-                        Id
-                        <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType = 'logType'; sortReverse = !sortReverse">
-                        Log Type
-                        <span ng-show="sortType == 'logType' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'logType' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType = 'logRegister'; sortReverse = !sortReverse">
-                        Log Register
-                        <span ng-show="sortType == 'logRegister' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'logRegister' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType = 'logDate'; sortReverse = !sortReverse">
-                        Log Date
-                        <span ng-show="sortType == 'logDate' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'logDate' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
+                    <td ng-repeat="a in atr">
+                        <a href="#" ng-click="sortType = a; sortReverse = !sortReverse">
+                            Attribute {{$index+1}}
+                            <span ng-show="sortType == a && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == a && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                </tr>
+                </thead>
 
-                <td>
-                    <a href="#" ng-click="sortType = 'atr1'; sortReverse = !sortReverse">
-                        Atr 1
-                        <span ng-show="sortType == 'atr1' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'atr1' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType = 'atr2'; sortReverse = !sortReverse">
-                        Atr 2
-                        <span ng-show="sortType == 'atr2' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'atr2' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType = 'atr3'; sortReverse = !sortReverse">
-                        Atr 3
-                        <span ng-show="sortType == 'atr3' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'atr3' && sortReverse" class="fa fa-caret-up"></span>
-                    </a>
-                </td>
-            </tr>
-            </thead>
+                <tbody>
+                <tr ng-repeat="log in logs| orderBy:sortType:sortReverse | filter:searchLog">
+                    <td>{{ log.id}}</td>
+                    <td>{{ log.logType}}</td>
+                    <td>{{ log.sourceId}}</td>
+                    <td>{{ log.logRegister}}</td>
+                    <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss Z'}}</td>
+                    <td ng-repeat="a in atr">{{ log[a]}}</td>
+                </tr>
+                </tbody>
 
-            <tbody>
-            <tr ng-repeat="log in logs| orderBy:sortType:sortReverse | filter:searchLog">
-                <td>{{ log.id}}</td>
-                <td>{{ log.logType}}</td>
-                <td>{{ log.logRegister}}</td>
-                <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss Z'}}</td>
-                <td>{{ log.atr1}}</td>
-                <td>{{ log.atr2}}</td>
-                <td>{{ log.atr3}}</td>
-            </tr>
-            </tbody>
-
-        </table>
+            </table>
+        </div>
     </div>
 
-
+</div>
 </body>
 </html>
