@@ -11,15 +11,16 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
 
     $scope.refreshAtr = function(registerName){
         $scope.atr = [];
-        for(var i = 0; i< registerName.attributesQuantity;i++){
-            $scope.atr.push("atr"+(i+1));
+
+        for(var i = 0; i< registerName.logAttributeNameDTOs.length;i++){
+            $scope.atr.push(registerName.logAttributeNameDTOs[i]);
         }
     };
 
     $scope.refreshAttr = function(log){
         $scope.attr = [];
-        for(var j = 0;j< log.attributesQuantity;j++){
-            $scope.attr.push("atr"+(j+1));
+        for(var j = 0;j< log.logRegisterDTO.logAttributeNameDTOs.length;j++){
+            $scope.attr.push(log.logRegisterDTO.logAttributeNameDTOs[j]);
         }
     };
 
@@ -53,18 +54,10 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
     };
 
     $scope.send = function(log){
-        console.log(log);
-        //var logMsg = {
-        //    logDate : new Date(),
-        //    logType: log.logType.logType,
-        //    logRegister: log.registerName.registerName,
-        //    sourceId: log.sourceId
-        //};
-        //for(var i = 0; i<log.registerName.attributesQuantity;i++){
-        //    logMsg["atr"+(i+1)] = log["atr"+(i+1)];
-        //}
-
-        logClient.sendLog(log).success(function(response){
+        log.logDate = new Date();
+        var logMsg =angular.toJson(log);
+        console.log(logMsg);
+        logClient.sendLog(logMsg).success(function(response){
             //$scope.getLogRegistry();
         });
     };

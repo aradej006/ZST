@@ -1,35 +1,37 @@
 package com.pw.zst.DTO;
 
+import java.util.List;
+
 /**
  * Created by aradej on 2015-10-28.
  */
 public class LogRegisterDTO {
 
-    private String registerName;
+    private String name;
 
-    private int attributesQuantity;
+    private List<LogAttributeNameDTO> logAttributeNameDTOs;
 
-    public String getRegisterName() {
-        return registerName;
+    public String getName() {
+        return name;
     }
 
-    public void setRegisterName(String registerName) {
-        this.registerName = registerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getAttributesQuantity() {
-        return attributesQuantity;
+    public List<LogAttributeNameDTO> getLogAttributeNameDTOs() {
+        return logAttributeNameDTOs;
     }
 
-    public void setAttributesQuantity(int attributesQuantity) {
-        this.attributesQuantity = attributesQuantity;
+    public void setLogAttributeNameDTOs(List<LogAttributeNameDTO> logAttributeNameDTOs) {
+        this.logAttributeNameDTOs = logAttributeNameDTOs;
     }
 
     @Override
     public String toString() {
         return "LogRegisterDTO{" +
-                "registerName='" + registerName + '\'' +
-                ", attributesQuantity=" + attributesQuantity +
+                "name='" + name + '\'' +
+                ", logAttributeNameDTOs=" + logAttributeNameDTOs +
                 '}';
     }
 }

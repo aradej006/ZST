@@ -14,13 +14,13 @@
     <div class="row">
         <div class="col-md-4" ng-init="collapsedSendLog = true">
             <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog; isCollapsed=true; collapsedLogType=true;
-            log.logTypeDTO=logTypes[0]; log.logRegisterDTO=registerNames[0];refreshAttr(log.logRegisterDTO)" value="Send Log"/>
+            log.logTypeDTO=logTypes[0]; log.logRegisterDTO=registerNames[0];refreshAttr(log)" value="Send Log"/>
             <div uib-collapse="collapsedSendLog">
                 <div class="well well-lg">
-                    <select class="form-control" ng-options="r.registerName for r in registerNames" ng-model="log.logRegisterDTO" ng-change="refreshAttr(log.logRegisterDTO)"></select>
+                    <select class="form-control" ng-options="r.name for r in registerNames" ng-model="log.logRegisterDTO" ng-change="refreshAttr(log.logRegisterDTO)"></select>
                     <input type="number" min="0" class="form-control" ng-model="log.sourceId" placeholder="SourceId"/>
                     <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logTypeDTO"></select>
-                    <input ng-repeat="a in attr" type="text" class="form-control" ng-model="log[a]" placeholder="Attribute {{$index+1}}"/>
+                    <input ng-repeat="a in attr" ng-init="log.logAttributeDTOs=[]" type="text" class="form-control" ng-model="log.logAttributeDTOs[$index].value" placeholder="{{a.name}}"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-click="send(log)" value="Add"/>
                 </div>
             </div>

@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface LogRegisterRepository extends JpaRepository<LogRegister, Long>{
 
-    List<LogRegister> findByRegisterName(String registerName);
+    List<LogRegister> findByName(String name);
 
 }

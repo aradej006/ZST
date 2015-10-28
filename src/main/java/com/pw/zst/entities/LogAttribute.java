@@ -3,6 +3,7 @@ package com.pw.zst.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by aradej on 2015-10-28.
@@ -14,9 +15,10 @@ public class LogAttribute {
     @GeneratedValue
     private Long id;
 
-    private String name;
-
     private String value;
+
+    @ManyToOne
+    private LogEntity logEntity;
 
     public Long getId() {
         return id;
@@ -24,14 +26,6 @@ public class LogAttribute {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getValue() {
@@ -42,12 +36,20 @@ public class LogAttribute {
         this.value = value;
     }
 
+    public LogEntity getLogEntity() {
+        return logEntity;
+    }
+
+    public void setLogEntity(LogEntity logEntity) {
+        this.logEntity = logEntity;
+    }
+
     @Override
     public String toString() {
         return "LogAttribute{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
+                ", logEntity=" + logEntity.getSourceId() +
                 '}';
     }
 }

@@ -25,11 +25,7 @@ public class LogRegisterService {
     }
 
     public void save(LogRegisterDTO logRegisterDTO){
-        if( logRegisterRepository.findByRegisterName(logRegisterDTO.getRegisterName()).size() == 0){
-            logRegisterRepository.save(LogRegisterTranslator.toEntity(logRegisterDTO));
-        }else{
-            System.out.println("LogRegister is exist with registerName="+logRegisterDTO.getRegisterName());
-        }
+        logRegisterRepository.save(LogRegisterTranslator.toEntity(logRegisterDTO));
     }
 
     public List<LogRegisterDTO> findAll(){
@@ -40,8 +36,8 @@ public class LogRegisterService {
         return logRegisterDTOList;
     }
 
-    public List<LogRegisterDTO> findByRegisterName(String registerName){
-        List<LogRegister> logRegisterList = logRegisterRepository.findByRegisterName(registerName);
+    public List<LogRegisterDTO> findByName(String name){
+        List<LogRegister> logRegisterList = logRegisterRepository.findByName(name);
         List<LogRegisterDTO> logRegisterDTOList = new LinkedList<LogRegisterDTO>();
         for(LogRegister logRegister: logRegisterList){
             logRegisterDTOList.add(LogRegisterTranslator.toDTO(logRegister));

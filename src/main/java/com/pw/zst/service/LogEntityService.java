@@ -42,8 +42,8 @@ public class LogEntityService {
 
     public void save(LogEntityDTO logEntityDTO){
         LogEntity logEntity = LogEntityTranslator.toEntity(logEntityDTO);
-        logEntity.setLogRegister( logRegisterRepository.findByRegisterName( logEntity.getLogRegister().getRegisterName() ).get(0) );
-        logEntity.setLogType( logTypeRepository.findByLogType( logEntity.getLogType().getLogType() ).get(0) );
+        logEntity.setLogRegister(logRegisterRepository.findByName(logEntity.getLogRegister().getName()).get(0));
+        logEntity.setLogType(logTypeRepository.findByLogType(logEntity.getLogType().getLogType()).get(0));
         logEntityRepository.save(logEntity);
     }
 

@@ -28,11 +28,7 @@ public class LogTypeService {
     }
 
     public void save(LogTypeDTO logTypeDTO){
-        if( logTypeRepository.findByLogType(logTypeDTO.getLogType()).size() == 0) {
-            logTypeRepository.save(LogTypeTranslator.toEntity(logTypeDTO));
-        }else{
-            System.out.println("LogType is exist");
-        }
+        logTypeRepository.save(LogTypeTranslator.toEntity(logTypeDTO));
     }
 
     public List<LogTypeDTO> findAll(){

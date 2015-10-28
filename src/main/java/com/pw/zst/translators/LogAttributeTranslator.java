@@ -10,7 +10,6 @@ public final class LogAttributeTranslator {
 
     public static LogAttribute toEntity(LogAttributeDTO logAttributeDTO){
         LogAttribute logAttribute = new LogAttribute();
-        logAttribute.setName(logAttributeDTO.getName());
         logAttribute.setValue(logAttributeDTO.getValue());
         return logAttribute;
     }
@@ -18,7 +17,6 @@ public final class LogAttributeTranslator {
     public static LogAttributeDTO toDTO(LogAttribute logAttribute){
         LogAttributeDTO logAttributeDTO = new LogAttributeDTO();
         logAttributeDTO.setValue(logAttribute.getValue());
-        logAttributeDTO.setName(logAttribute.getName());
         return logAttributeDTO;
     }
 

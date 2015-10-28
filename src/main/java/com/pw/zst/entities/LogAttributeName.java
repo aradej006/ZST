@@ -1,23 +1,21 @@
 package com.pw.zst.entities;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
- * Created by arade on 25-Oct-15.
+ * Created by arade on 28-Oct-15.
  */
 @Entity
-public class LogRegister {
+public class LogAttributeName {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "logRegister")
-    private List<LogAttributeName> attributeNames;
+    @ManyToOne
+    private LogRegister logRegister;
 
     public Long getId() {
         return id;
@@ -35,20 +33,20 @@ public class LogRegister {
         this.name = name;
     }
 
-    public List<LogAttributeName> getAttributeNames() {
-        return attributeNames;
+    public LogRegister getLogRegister() {
+        return logRegister;
     }
 
-    public void setAttributeNames(List<LogAttributeName> attributeNames) {
-        this.attributeNames = attributeNames;
+    public void setLogRegister(LogRegister logRegister) {
+        this.logRegister = logRegister;
     }
 
     @Override
     public String toString() {
-        return "LogRegister{" +
+        return "LogAttributeName{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", attributeNames=" + attributeNames +
+                ", logRegister=" + logRegister.getName() +
                 '}';
     }
 }

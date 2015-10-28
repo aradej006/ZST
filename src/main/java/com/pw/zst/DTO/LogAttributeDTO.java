@@ -5,17 +5,7 @@ package com.pw.zst.DTO;
  */
 public class LogAttributeDTO {
 
-    private String name;
-
     private String value;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getValue() {
         return value;
@@ -28,8 +18,7 @@ public class LogAttributeDTO {
     @Override
     public String toString() {
         return "LogAttributeDTO{" +
-                "name='" + name + '\'' +
-                ", value='" + value + '\'' +
+                "value='" + value + '\'' +
                 '}';
     }
 }
