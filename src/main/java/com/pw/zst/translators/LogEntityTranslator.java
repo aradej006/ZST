@@ -11,7 +11,7 @@ public final class LogEntityTranslator {
     public static LogEntity toEntity(LogEntityDTO logEntityDTO){
         LogEntity logEntity = new LogEntity();
         logEntity.setLogDate(logEntityDTO.getLogDate());
-        logEntity.setLogType(logEntityDTO.getLogType());
+        logEntity.setLogType(LogTypeTranslator.toEntity(logEntityDTO.getLogTypeDTO()));
         logEntity.setAtr1(logEntityDTO.getAtr1());
         logEntity.setAtr2(logEntityDTO.getAtr2());
         logEntity.setAtr3(logEntityDTO.getAtr3());
@@ -23,7 +23,7 @@ public final class LogEntityTranslator {
         logEntity.setAtr9(logEntityDTO.getAtr9());
         logEntity.setAtr10(logEntityDTO.getAtr10());
         logEntity.setId(logEntityDTO.getId());
-        logEntity.setLogRegister(logEntityDTO.getLogRegister());
+        logEntity.setLogRegister(LogRegisterTranslator.toEntity(logEntityDTO.getLogRegisterDTO()));
         logEntity.setSourceId(logEntityDTO.getSourceId());
         return logEntity;
     }
@@ -31,7 +31,7 @@ public final class LogEntityTranslator {
     public static LogEntityDTO toDTO(LogEntity logEntity){
         LogEntityDTO logEntityDTO = new LogEntityDTO();
         logEntityDTO.setLogDate(logEntity.getLogDate());
-        logEntityDTO.setLogType(logEntity.getLogType());
+        logEntityDTO.setLogTypeDTO(LogTypeTranslator.toDTO(logEntity.getLogType()));
         logEntityDTO.setAtr1(logEntity.getAtr1());
         logEntityDTO.setAtr2(logEntity.getAtr2());
         logEntityDTO.setAtr3(logEntity.getAtr3());
@@ -43,7 +43,7 @@ public final class LogEntityTranslator {
         logEntityDTO.setAtr9(logEntity.getAtr9());
         logEntityDTO.setAtr10(logEntity.getAtr10());
         logEntityDTO.setId(logEntity.getId());
-        logEntityDTO.setLogRegister(logEntity.getLogRegister());
+        logEntityDTO.setLogRegisterDTO(LogRegisterTranslator.toDTO(logEntity.getLogRegister()));
         logEntityDTO.setSourceId(logEntity.getSourceId());
         return  logEntityDTO;
     }

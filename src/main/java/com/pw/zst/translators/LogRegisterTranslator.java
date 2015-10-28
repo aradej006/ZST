@@ -11,14 +11,14 @@ public final class LogRegisterTranslator {
     public static LogRegister toEntity(LogRegisterDTO logRegisterDTO){
         LogRegister logRegister = new LogRegister();
         logRegister.setRegisterName(logRegisterDTO.getRegisterName());
-        logRegister.setAttributsQuantity(logRegisterDTO.getAttributesQuantity());
+        logRegister.setAttributesQuantity(logRegisterDTO.getAttributesQuantity());
         return logRegister;
     }
 
     public static LogRegisterDTO toDTO(LogRegister logRegister){
         LogRegisterDTO logRegisterDTO = new LogRegisterDTO();
         logRegisterDTO.setRegisterName(logRegister.getRegisterName());
-        logRegisterDTO.setAttributesQuantity(logRegister.getAttributsQuantity());
+        logRegisterDTO.setAttributesQuantity(logRegister.getAttributesQuantity());
         return logRegisterDTO;
     }
 }

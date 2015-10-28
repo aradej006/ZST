@@ -12,9 +12,6 @@ import javax.inject.Named;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by arade on 25-Oct-15.
- */
 @Stateless
 @Named
 public class LogRegisterService {

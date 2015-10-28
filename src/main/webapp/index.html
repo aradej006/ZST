@@ -13,20 +13,20 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4" ng-init="collapsedSendLog = true">
-            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog;
-            log.logType=logTypes[0]; log.registerName=registerNames[0];refreshAttr(log.registerName)" value="Send Log"/>
+            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog; isCollapsed=true; collapsedLogType=true;
+            log.logTypeDTO=logTypes[0]; log.logRegisterDTO=registerNames[0];refreshAttr(log.logRegisterDTO)" value="Send Log"/>
             <div uib-collapse="collapsedSendLog">
                 <div class="well well-lg">
-                    <select class="form-control" ng-options="r.registerName for r in registerNames" ng-model="log.registerName" ng-change="refreshAttr(log.registerName)"></select>
+                    <select class="form-control" ng-options="r.registerName for r in registerNames" ng-model="log.logRegisterDTO" ng-change="refreshAttr(log.logRegisterDTO)"></select>
                     <input type="number" min="0" class="form-control" ng-model="log.sourceId" placeholder="SourceId"/>
-                    <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logType"></select>
+                    <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logTypeDTO"></select>
                     <input ng-repeat="a in attr" type="text" class="form-control" ng-model="log[a]" placeholder="Attribute {{$index+1}}"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-click="send(log)" value="Add"/>
                 </div>
             </div>
         </div>
         <div class="col-md-4" ng-init="isCollapsed = true">
-            <input id="addRegister" type="button" class="btn btn-primary" ng-click="isCollapsed = !isCollapsed" value="Add Register"/>
+            <input id="addRegister" type="button" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=!isCollapsed; collapsedLogType=true;" value="Add Register"/>
             <div uib-collapse="isCollapsed">
                 <div class="well well-lg">
                     <input type="text" class="form-control" ng-model="newRegister.registerName" placeholder="Register Name" ng-change="validNewRegister(newRegister)"/>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-md-4" ng-init="collapsedLogType = true">
-            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedLogType=!collapsedLogType" value="Add Log Type"/>
+            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=true; collapsedLogType=!collapsedLogType;" value="Add Log Type"/>
             <div uib-collapse="collapsedLogType">
                 <div class="well well-lg">
                     <input type="text" class="form-control" ng-model="newType" placeholder="Log Type Name"/>
@@ -52,7 +52,10 @@
             <select class="form-control" ng-options="register.registerName for register in registerNames"
                     ng-model="registerName" ng-change="getLogRegistry()"></select>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-4">
+            <input type="button" class="form-control" ng-click="getLogRegistry()" value="Refresh">
+        </div>
+        <div class="col-md-4">
             <input type="text" class="form-control" placeholder="Search..." ng-model="searchLog">
         </div>
     </div>

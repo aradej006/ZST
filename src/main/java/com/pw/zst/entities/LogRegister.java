@@ -1,8 +1,6 @@
 package com.pw.zst.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by arade on 25-Oct-15.
@@ -16,7 +14,7 @@ public class LogRegister {
 
     private String registerName;
 
-    private int attributsQuantity;
+    private int attributesQuantity;
 
     public Long getId() {
         return id;
@@ -34,20 +32,20 @@ public class LogRegister {
         this.registerName = registryName;
     }
 
-    public int getAttributsQuantity() {
-        return attributsQuantity;
+    public int getAttributesQuantity() {
+        return attributesQuantity;
     }
 
-    public void setAttributsQuantity(int attributsQuantity) {
-        this.attributsQuantity = attributsQuantity;
+    public void setAttributesQuantity(int attributesQuantity) {
+        this.attributesQuantity = attributesQuantity;
     }
 
     @Override
     public String toString() {
         return "LogRegister{" +
                 "id=" + id +
-                ", registryName='" + registerName + '\'' +
-                ", attributsQuantity=" + attributsQuantity +
+                ", registerName='" + registerName + '\'' +
+                ", attributesQuantity=" + attributesQuantity +
                 '}';
     }
 }

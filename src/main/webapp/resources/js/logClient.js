@@ -1,5 +1,5 @@
 angular.module('logClient', ['ngAnimate', 'ui.bootstrap']);
-angular.module('logClient').controller('ctrl', function ($scope, $http) {
+angular.module('logClient').controller('ctrl', function ($scope, $http, $interval) {
     $scope.sortType     = 'id'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.searchLog = '';     // set the default search/filter term
@@ -23,100 +23,152 @@ angular.module('logClient').controller('ctrl', function ($scope, $http) {
         }
     };
 
-    $scope.sendLog = function(log){
-        return $http.post("/ZST/rest/log", log);
+    var logClient = {
+        addLogType : function(logType){
+            return $http.post("rest/logType", logType);
+        },
+        getLogTypes : function(){
+            return $http.get("rest/logType");
+        },
+        sendLog : function(log){
+            return $http.post("rest/log", log);
+        },
+        getAllLogs : function(){
+            return $http.get("rest/log/all");
+        },
+        getLogs : function(registerName){
+            return $http.get("rest/log/"+registerName+"/get");
+        },
+
+        getRegisterNames : function(){
+            return $http.get("rest/logRegister");
+        },
+        addRegister : function(register){
+            return $http.post("rest/logRegister", register);
+        }
     };
 
-    $scope.getLogTypes = function(){
-        return $http.get("/ZST/rest/logType");
+    $scope.getLogClient = function(){
+        return logClient;
     };
-
-    //$scope.
-
-
-
 
     $scope.send = function(log){
-        var logMsg = {
-            logDate : new Date(),
-            logType: log.logType.logType,
-            logRegister: log.registerName.registerName,
-            sourceId: log.sourceId
-        };
-        for(var i = 0; i<log.registerName.attributesQuantity;i++){
-            logMsg["atr"+(i+1)] = log["atr"+(i+1)];
-        }
+        console.log(log);
+        //var logMsg = {
+        //    logDate : new Date(),
+        //    logType: log.logType.logType,
+        //    logRegister: log.registerName.registerName,
+        //    sourceId: log.sourceId
+        //};
+        //for(var i = 0; i<log.registerName.attributesQuantity;i++){
+        //    logMsg["atr"+(i+1)] = log["atr"+(i+1)];
+        //}
 
-        $scope.sendLog(logMsg).success(function(response){
-            $scope.getLogRegistry();
+        logClient.sendLog(log).success(function(response){
+            //$scope.getLogRegistry();
         });
     };
 
-    $scope.getLogTypes().success(function(response){
-        $scope.logType = response;
-    });
+    $scope.getLogTypes = function(){
+        logClient.getLogTypes().success(function(result){
+            $scope.logTypes = result;
+        });
+    };
+    $scope.getLogTypes();
 
     $scope.getLogs = function(){
-        $http.get("/ZST/rest/log/all")
-            .success(function(response){
-                $scope.logs = response;
-            }).error(function(error){
-                console.log( error);
-                return undefined;
-            });
+        logClient.getAllLogs().success(function(result){
+            $scope.logs = response;
+        });
     };
 
     $scope.addLogType = function(logTypeName){
         var newType = {
             logType:logTypeName
         };
-        $http.post("/ZST/rest/logType", newType)
-            .success(function(response){
-                $scope.getLogTypes();
-            }).error(function(error){
-                console.log( error);
-            });
+        logClient.addLogType(newType).success(function(result){
+            $scope.getLogTypes();
+        });
     };
-    $scope.addLogType('SYSTEM');
 
     $scope.getRegisterNames = function(){
-        $http.get("/ZST/rest/logRegister")
+        logClient.getRegisterNames()
             .success(function(response){
                 $scope.registerNames = response;
                 $scope.registerName = $scope.registerNames[0];
                 $scope.refreshAtr($scope.registerName);
-            }).error(function(error){
-                console.log( error);
             });
     };
     $scope.getRegisterNames();
 
     $scope.getLogRegistry =  function(){
         $scope.refreshAtr($scope.registerName);
-        $http.get("/ZST/rest/log/"+$scope.registerName.registerName+"/get")
+        logClient.getLogs($scope.registerName.registerName)
             .success(function (response) {
                 $scope.logs = response;
-            }).error(function (response) {
-                console.log( response );
             });
     };
 
     $scope.addNewRegister = function(newRegister){
         if( newRegister.registerName != undefined && newRegister.attributesQuantity != undefined){
-            $http.post("/ZST/rest/logRegister", newRegister)
+            logClient.addRegister(newRegister)
                 .success(function (response) {
                     $scope.getRegisterNames();
-                }).error(function (response) {
-                    console.log(response);
                 });
         }
-    }
+    };
 
     $scope.validNewRegister = function(newRegistry){
         if( newRegistry.registerName == undefined || newRegistry.registerName == '') $scope.invalidRegisterMessage = "Registry Name is required.";
         else if( newRegistry.attributesQuantity == undefined) $scope.invalidRegisterMessage = "Attributes Quantity must be between 1 to 10.";
         else $scope.invalidRegisterMessage = '';
 
-    }
+    };
+
+    $scope.generateLog = function(){
+        var rand = Math.floor( Math.random()*100000 );
+
+        var logMsg = {
+            logDate : new Date(),
+            logType: $scope.logTypes[rand%$scope.logTypes.length].logType,
+            logRegister: $scope.registerNames[rand%$scope.registerNames.length].registerName,
+            sourceId: rand
+        };
+        for(var i = 0; i<$scope.registerNames[rand%$scope.registerNames.length].attributesQuantity;i++){
+            logMsg["atr"+(i+1)] = generateString(5);
+        }
+        $scope.generatedLog = logMsg;
+            logClient.sendLog(logMsg).success(function(response){
+        }).error(function(error){
+                console.log(error);
+            });
+    };
+
+
+    var stopGenerate;
+    $scope.generateLogs = function(interval){
+
+        if( angular.isDefined(stopGenerate) ) return;
+
+        stopGenerate = $interval( $scope.generateLog, interval);
+
+    };
+
+    $scope.stopGenerating = function(){
+        if( angular.isDefined(stopGenerate)){
+            $interval.cancel(stopGenerate);
+            stopGenerate = undefined;
+        }
+    };
+
+    var generateString = function(length){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < length; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    };
 
 });

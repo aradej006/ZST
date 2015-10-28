@@ -1,5 +1,7 @@
 package com.pw.zst.DTO;
 
+import com.pw.zst.entities.LogRegister;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.util.Date;
@@ -15,11 +17,11 @@ public class LogEntityDTO {
 
     private Date logDate;
 
-    private String logType;
+    private LogTypeDTO logTypeDTO;
 
     private Long sourceId;
 
-    private String logRegister;
+    private LogRegisterDTO logRegisterDTO;
 
     private String atr1;
 
@@ -33,6 +35,27 @@ public class LogEntityDTO {
     private String atr8;
     private String atr9;
     private String atr10;
+
+    @Override
+    public String toString() {
+        return "LogEntityDTO{" +
+                "id=" + id +
+                ", logDate=" + logDate +
+                ", logTypeDTO=" + logTypeDTO +
+                ", sourceId=" + sourceId +
+                ", logRegisterDTO=" + logRegisterDTO +
+                ", atr1='" + atr1 + '\'' +
+                ", atr2='" + atr2 + '\'' +
+                ", atr3='" + atr3 + '\'' +
+                ", atr4='" + atr4 + '\'' +
+                ", atr5='" + atr5 + '\'' +
+                ", atr6='" + atr6 + '\'' +
+                ", atr7='" + atr7 + '\'' +
+                ", atr8='" + atr8 + '\'' +
+                ", atr9='" + atr9 + '\'' +
+                ", atr10='" + atr10 + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;
@@ -50,12 +73,28 @@ public class LogEntityDTO {
         this.logDate = logDate;
     }
 
-    public String getLogType() {
-        return logType;
+    public LogTypeDTO getLogTypeDTO() {
+        return logTypeDTO;
     }
 
-    public void setLogType(String logType) {
-        this.logType = logType;
+    public void setLogTypeDTO(LogTypeDTO logTypeDTO) {
+        this.logTypeDTO = logTypeDTO;
+    }
+
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public LogRegisterDTO getLogRegisterDTO() {
+        return logRegisterDTO;
+    }
+
+    public void setLogRegisterDTO(LogRegisterDTO logRegisterDTO) {
+        this.logRegisterDTO = logRegisterDTO;
     }
 
     public String getAtr1() {
@@ -80,43 +119,6 @@ public class LogEntityDTO {
 
     public void setAtr3(String atr3) {
         this.atr3 = atr3;
-    }
-
-    public String getLogRegister() {
-        return logRegister;
-    }
-
-    public void setLogRegister(String logRegister) {
-        this.logRegister = logRegister;
-    }
-
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    @Override
-    public String toString() {
-        return "LogEntityDTO{" +
-                "id=" + id +
-                ", logDate=" + logDate +
-                ", logType='" + logType + '\'' +
-                ", sourceId=" + sourceId +
-                ", logRegister='" + logRegister + '\'' +
-                ", atr1='" + atr1 + '\'' +
-                ", atr2='" + atr2 + '\'' +
-                ", atr3='" + atr3 + '\'' +
-                ", atr4='" + atr4 + '\'' +
-                ", atr5='" + atr5 + '\'' +
-                ", atr6='" + atr6 + '\'' +
-                ", atr7='" + atr7 + '\'' +
-                ", atr8='" + atr8 + '\'' +
-                ", atr9='" + atr9 + '\'' +
-                ", atr10='" + atr10 + '\'' +
-                '}';
     }
 
     public String getAtr4() {
@@ -174,5 +176,4 @@ public class LogEntityDTO {
     public void setAtr10(String atr10) {
         this.atr10 = atr10;
     }
-
 }

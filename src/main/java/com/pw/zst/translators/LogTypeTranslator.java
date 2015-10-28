@@ -1,6 +1,5 @@
 package com.pw.zst.translators;
 
-import com.pw.zst.DTO.LogEntityDTO;
 import com.pw.zst.DTO.LogTypeDTO;
 import com.pw.zst.entities.LogType;
 

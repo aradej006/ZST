@@ -1,8 +1,6 @@
 package com.pw.zst.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,7 +14,9 @@ public class LogEntity implements Serializable, Cloneable{
     @GeneratedValue
     private Long id;
     private Date logDate;
-    private String logType;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private LogType logType;
     private Long sourceId;
     private String atr1;
     private String atr2;
@@ -29,7 +29,8 @@ public class LogEntity implements Serializable, Cloneable{
     private String atr9;
     private String atr10;
 
-    private String logRegister;
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private LogRegister logRegister;
 
     public Long getId() {
         return id;
@@ -47,12 +48,20 @@ public class LogEntity implements Serializable, Cloneable{
         this.logDate = logDate;
     }
 
-    public String getLogType() {
+    public LogType getLogType() {
         return logType;
     }
 
-    public void setLogType(String logType) {
+    public void setLogType(LogType logType) {
         this.logType = logType;
+    }
+
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 
     public String getAtr1() {
@@ -77,22 +86,6 @@ public class LogEntity implements Serializable, Cloneable{
 
     public void setAtr3(String atr3) {
         this.atr3 = atr3;
-    }
-
-    public String getLogRegister() {
-        return logRegister;
-    }
-
-    public void setLogRegister(String logRegister) {
-        this.logRegister = logRegister;
-    }
-
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
     }
 
     public String getAtr4() {
@@ -151,12 +144,20 @@ public class LogEntity implements Serializable, Cloneable{
         this.atr10 = atr10;
     }
 
+    public LogRegister getLogRegister() {
+        return logRegister;
+    }
+
+    public void setLogRegister(LogRegister logRegister) {
+        this.logRegister = logRegister;
+    }
+
     @Override
     public String toString() {
         return "LogEntity{" +
                 "id=" + id +
                 ", logDate=" + logDate +
-                ", logType='" + logType + '\'' +
+                ", logType=" + logType +
                 ", sourceId=" + sourceId +
                 ", atr1='" + atr1 + '\'' +
                 ", atr2='" + atr2 + '\'' +
@@ -168,7 +169,7 @@ public class LogEntity implements Serializable, Cloneable{
                 ", atr8='" + atr8 + '\'' +
                 ", atr9='" + atr9 + '\'' +
                 ", atr10='" + atr10 + '\'' +
-                ", logRegister='" + logRegister + '\'' +
+                ", logRegister=" + logRegister +
                 '}';
     }
 }
