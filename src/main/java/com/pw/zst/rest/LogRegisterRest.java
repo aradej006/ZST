@@ -1,7 +1,6 @@
 package com.pw.zst.rest;
 
 import com.pw.zst.DTO.LogRegisterDTO;
-import com.pw.zst.repositories.LogRegisterRepository;
 import com.pw.zst.service.LogRegisterService;
 
 import javax.inject.Inject;

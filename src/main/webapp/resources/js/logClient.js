@@ -1,109 +1,98 @@
 angular.module('logClient', ['ngAnimate', 'ui.bootstrap']);
 angular.module('logClient').controller('ctrl', function ($scope, $http, $interval) {
-    $scope.sortType     = 'id'; // set the default sort type
-    $scope.sortReverse  = false;  // set the default sort order
+    $scope.sortType = 'id'; // set the default sort type
+    $scope.sortReverse = false;  // set the default sort order
     $scope.searchLog = '';     // set the default search/filter term
     $scope.registerNames = [];
     $scope.registerName = {};
-    $scope.atr = [];
     $scope.invalidRegisterMessage = '';
-    $scope.attr = [];
-
-    $scope.refreshAtr = function(registerName){
-        $scope.atr = [];
-
-        for(var i = 0; i< registerName.logAttributeNameDTOs.length;i++){
-            $scope.atr.push(registerName.logAttributeNameDTOs[i]);
-        }
-    };
-
-    $scope.refreshAttr = function(log){
-        $scope.attr = [];
-        for(var j = 0;j< log.logRegisterDTO.logAttributeNameDTOs.length;j++){
-            $scope.attr.push(log.logRegisterDTO.logAttributeNameDTOs[j]);
-        }
-    };
 
     var logClient = {
-        addLogType : function(logType){
+        addLogType: function (logType) {
             return $http.post("rest/logType", logType);
         },
-        getLogTypes : function(){
+        getLogTypes: function () {
             return $http.get("rest/logType");
         },
-        sendLog : function(log){
+        sendLog: function (log) {
             return $http.post("rest/log", log);
         },
-        getAllLogs : function(){
+        getAllLogs: function () {
             return $http.get("rest/log/all");
         },
-        getLogs : function(registerName){
-            return $http.get("rest/log/"+registerName+"/get");
+        getLogs: function (registerName) {
+            return $http.get("rest/log/" + registerName + "/get");
         },
 
-        getRegisterNames : function(){
+        getRegisterNames: function () {
             return $http.get("rest/logRegister");
         },
-        addRegister : function(register){
+        addRegister: function (register) {
             return $http.post("rest/logRegister", register);
+        },
+        deleteLog:function(log){
+            return $http.post("rest/log/delete", log);
         }
     };
 
-    $scope.getLogClient = function(){
+    $scope.getLogClient = function () {
         return logClient;
     };
 
-    $scope.send = function(log){
+    $scope.send = function (log) {
         log.logDate = new Date();
-        var logMsg =angular.toJson(log);
-        console.log(logMsg);
-        logClient.sendLog(logMsg).success(function(response){
-            //$scope.getLogRegistry();
+        var logMsg = angular.toJson(log);
+        logClient.sendLog(logMsg).success(function (response) {
+            $scope.getLogRegistry();
         });
     };
 
-    $scope.getLogTypes = function(){
-        logClient.getLogTypes().success(function(result){
+    $scope.getLogTypes = function () {
+        logClient.getLogTypes().success(function (result) {
             $scope.logTypes = result;
         });
     };
     $scope.getLogTypes();
 
-    $scope.getLogs = function(){
-        logClient.getAllLogs().success(function(result){
+    $scope.deleteLog = function(log){
+        logClient.deleteLog(log);
+        $scope.logs.splice($scope.logs.indexOf(log),1);
+    };
+
+    $scope.getLogs = function () {
+        logClient.getAllLogs().success(function (result) {
             $scope.logs = response;
         });
     };
 
-    $scope.addLogType = function(logTypeName){
+    $scope.addLogType = function (logTypeName) {
         var newType = {
-            logType:logTypeName
+            logType: logTypeName
         };
-        logClient.addLogType(newType).success(function(result){
+        logClient.addLogType(newType).success(function (result) {
             $scope.getLogTypes();
         });
     };
 
-    $scope.getRegisterNames = function(){
+    $scope.getRegisterNames = function () {
         logClient.getRegisterNames()
-            .success(function(response){
+            .success(function (response) {
                 $scope.registerNames = response;
                 $scope.registerName = $scope.registerNames[0];
-                $scope.refreshAtr($scope.registerName);
             });
     };
     $scope.getRegisterNames();
 
-    $scope.getLogRegistry =  function(){
-        $scope.refreshAtr($scope.registerName);
-        logClient.getLogs($scope.registerName.registerName)
+    $scope.getLogRegistry = function () {
+        logClient.getLogs($scope.registerName.name)
             .success(function (response) {
                 $scope.logs = response;
             });
     };
 
-    $scope.addNewRegister = function(newRegister){
-        if( newRegister.registerName != undefined && newRegister.attributesQuantity != undefined){
+
+    $scope.addNewRegister = function (newRegister) {
+        if (newRegister.name != undefined) {
             logClient.addRegister(newRegister)
                 .success(function (response) {
                     $scope.getRegisterNames();
@@ -111,54 +100,66 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
         }
     };
 
-    $scope.validNewRegister = function(newRegistry){
-        if( newRegistry.registerName == undefined || newRegistry.registerName == '') $scope.invalidRegisterMessage = "Registry Name is required.";
-        else if( newRegistry.attributesQuantity == undefined) $scope.invalidRegisterMessage = "Attributes Quantity must be between 1 to 10.";
+    $scope.validNewRegister = function (newRegistry, attributesQuantity) {
+        if (newRegistry.name == undefined || newRegistry.name == '') $scope.invalidRegisterMessage = "Registry Name is required.";
+        else if (attributesQuantity == undefined) $scope.invalidRegisterMessage = "Attributes Quantity must be between 1 to 15.";
         else $scope.invalidRegisterMessage = '';
 
+        newRegistry.logAttributeNameDTOs = [];
+        if (attributesQuantity != undefined && attributesQuantity > 0) {
+            attributesQuantity = Math.floor(attributesQuantity);
+            if (attributesQuantity > 0) {
+                for (var i = 0; i < attributesQuantity; i++) {
+                    newRegistry.logAttributeNameDTOs[i] = {name: undefined};
+                }
+            }
+        }
+        console.log(newRegistry);
+
     };
 
-    $scope.generateLog = function(){
-        var rand = Math.floor( Math.random()*100000 );
-
+    $scope.generateLog = function () {
+        var rand = Math.floor(Math.random() * 100000);
         var logMsg = {
-            logDate : new Date(),
-            logType: $scope.logTypes[rand%$scope.logTypes.length].logType,
-            logRegister: $scope.registerNames[rand%$scope.registerNames.length].registerName,
-            sourceId: rand
+            logDate: new Date(),
+            logTypeDTO:$scope.logTypes[rand % $scope.logTypes.length],
+            sourceId: rand,
+            logRegisterDTO:$scope.registerNames[rand % $scope.registerNames.length]
         };
-        for(var i = 0; i<$scope.registerNames[rand%$scope.registerNames.length].attributesQuantity;i++){
-            logMsg["atr"+(i+1)] = generateString(5);
+        logMsg.logAttributeDTOs = [];
+        for (var i = 0; i < logMsg.logRegisterDTO.logAttributeNameDTOs.length; i++) {
+            logMsg.logAttributeDTOs[i] = { value: generateString(5)};
         }
         $scope.generatedLog = logMsg;
-            logClient.sendLog(logMsg).success(function(response){
-        }).error(function(error){
-                console.log(error);
-            });
+        logClient.sendLog(logMsg).success(function (response) {
+        });
     };
+
+
+
 
 
     var stopGenerate;
-    $scope.generateLogs = function(interval){
+    $scope.generateLogs = function (interval) {
 
-        if( angular.isDefined(stopGenerate) ) return;
+        if (angular.isDefined(stopGenerate)) return;
 
-        stopGenerate = $interval( $scope.generateLog, interval);
+        stopGenerate = $interval($scope.generateLog, interval);
 
     };
 
-    $scope.stopGenerating = function(){
-        if( angular.isDefined(stopGenerate)){
+    $scope.stopGenerating = function () {
+        if (angular.isDefined(stopGenerate)) {
             $interval.cancel(stopGenerate);
             stopGenerate = undefined;
         }
     };
 
-    var generateString = function(length){
+    var generateString = function (length) {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for( var i=0; i < length; i++ )
+        for (var i = 0; i < length; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         return text;

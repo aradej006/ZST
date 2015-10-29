@@ -98,7 +98,6 @@ public class StartupBean {
         logAttributeDTOs.add(logAttributeDTO2);
         logEntityDTO.setLogAttributeDTOs(logAttributeDTOs);
         logEntityService.save(logEntityDTO);
-
     }
 
 }

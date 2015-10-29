@@ -1,6 +1,7 @@
 package com.pw.zst.service;
 
 import com.pw.zst.DTO.LogEntityDTO;
+import com.pw.zst.DTO.LogRegisterDTO;
 import com.pw.zst.entities.LogEntity;
 import com.pw.zst.entities.LogRegister;
 import com.pw.zst.repositories.LogEntityRepository;
@@ -55,12 +56,34 @@ public class LogEntityService {
         return logEntityDTOList;
     }
 
-    public List<LogEntityDTO> findByLogRegister(String logRegister){
+    public List<LogEntityDTO> findByLogRegister_Name(String name){
         List<LogEntityDTO> logEntityDTOList = new LinkedList<LogEntityDTO>();
-        for(LogEntity logEntity : logEntityRepository.findByLogRegister(logRegister)){
+        for(LogEntity logEntity : logEntityRepository.findByLogRegister_Name(name)){
             logEntityDTOList.add( LogEntityTranslator.toDTO(logEntity));
         }
         return logEntityDTOList;
+    }
+
+    public List<LogEntityDTO> findByLogRegister(LogRegisterDTO logRegisterDTO){
+        LogRegister logRegister = logRegisterRepository.findByName(logRegisterDTO.getName()).get(0);
+        List<LogEntityDTO> logEntityDTOList = new LinkedList<LogEntityDTO>();
+        for(LogEntity logEntity : logEntityRepository.findByLogRegister(logRegister)){
+            logEntityDTOList.add(LogEntityTranslator.toDTO(logEntity));
+        }
+        return logEntityDTOList;
+    }
+
+    public void removeByLogEntityDTO(LogEntityDTO logEntityDTO){
+        LogEntity logEntity = LogEntityTranslator.toEntity(logEntityDTO);
+        logEntity.setLogRegister(logRegisterRepository.findByName(logEntity.getLogRegister().getName()).get(0));
+        logEntity.setLogType(logTypeRepository.findByLogType(logEntity.getLogType().getLogType()).get(0));
+        logEntity = logEntityRepository.findByLogDateAndSourceIdAndLogRegisterAndLogType(logEntity.getLogDate(), logEntity.getSourceId(), logEntity.getLogRegister(), logEntity.getLogType()).get(0);
+        System.out.println("-------------------"+ logEntity.getId()+"---------------------------");
+        logEntityRepository.delete(logEntity.getId());
+    }
+
+    public void deleteById(Long id){
+        logEntityRepository.delete(id);
     }
 
 }

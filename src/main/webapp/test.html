@@ -2,7 +2,7 @@
 <html lang="en" ng-app="logClient">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Log Client</title>
     <script src="resources/js/angular.min.js"></script>
     <script src="resources/js/angular-animate.min.js"></script>
     <script src="resources/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="resources/css/style.css"/>
 </head>
 <body ng-controller="ctrl">
-    <button class="form-control" ng-click="generateLogs(10)">Test</button>
+    <button class="form-control" ng-click="generateLogs(100)">Test</button>
     <button class="form-control" ng-click="stopGenerating()">Stop Generating</button>
     <div>
         {{generatedLog | json}}

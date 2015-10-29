@@ -47,11 +47,26 @@ public class LogAgent {
         return logEntityService.findAll();
     }
 
-    @Path("/{registerName}/get")
+    @Path("/{logRegisterDTO_Name}/get")
     @GET
     @Produces("application/json")
-    public List<LogEntityDTO> findByRegisterName(@PathParam("registerName")String registerName){
-        return logEntityService.findByLogRegister(registerName);
+    public List<LogEntityDTO> findByRegisterName(@PathParam("logRegisterDTO_Name")String name){
+        System.out.println("------------------------------- "+ name +" -----------------------------------");
+        return logEntityService.findByLogRegister_Name(name);
     }
 
+    @POST
+    @Path("/delete")
+    @Consumes("application/json")
+    public Response removeByLogEntityDTO(LogEntityDTO logEntityDTO){
+        try{
+            logEntityService.removeByLogEntityDTO(logEntityDTO);
+        }catch(ConstraintViolationException e){
+            Map<String, String> responseObj = new HashMap<String, String>();
+            responseObj.put("error", e.getMessage());
+            System.out.println(e.getConstraintViolations());
+            return Response.status(Response.Status.BAD_REQUEST).entity(responseObj).build();
+        }
+        return Response.status(201).build();
+    }
 }

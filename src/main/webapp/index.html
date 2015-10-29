@@ -1,6 +1,8 @@
 <!doctype html>
 <html ng-app="logClient">
 <head>
+    <meta charset="UTF-8">
+    <title>Log Viewer</title>
     <script src="resources/js/angular.min.js"></script>
     <script src="resources/js/angular-animate.min.js"></script>
     <script src="resources/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
@@ -20,7 +22,7 @@
                     <select class="form-control" ng-options="r.name for r in registerNames" ng-model="log.logRegisterDTO" ng-change="refreshAttr(log.logRegisterDTO)"></select>
                     <input type="number" min="0" class="form-control" ng-model="log.sourceId" placeholder="SourceId"/>
                     <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logTypeDTO"></select>
-                    <input ng-repeat="a in attr" ng-init="log.logAttributeDTOs=[]" type="text" class="form-control" ng-model="log.logAttributeDTOs[$index].value" placeholder="{{a.name}}"/>
+                    <input ng-repeat="a in log.logRegisterDTO.logAttributeNameDTOs" ng-init="log.logAttributeDTOs=[]" type="text" class="form-control" ng-model="log.logAttributeDTOs[$index].value" placeholder="{{a.name}}"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-click="send(log)" value="Add"/>
                 </div>
             </div>
@@ -29,8 +31,10 @@
             <input id="addRegister" type="button" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=!isCollapsed; collapsedLogType=true;" value="Add Register"/>
             <div uib-collapse="isCollapsed">
                 <div class="well well-lg">
-                    <input type="text" class="form-control" ng-model="newRegister.registerName" placeholder="Register Name" ng-change="validNewRegister(newRegister)"/>
-                    <input type="number" min="1" max="10" class="form-control" ng-model="newRegister.attributesQuantity" ng-change="validNewRegister(newRegister)" placeholder="Attributes Quantity"/>
+                    <input type="text" class="form-control" ng-model="newRegister.name" placeholder="Register Name" ng-change="validNewRegister(newRegister, attributesQuantity)"/>
+                    <input type="number" min="0" max="15" class="form-control" ng-model="attributesQuantity" ng-change="validNewRegister(newRegister, attributesQuantity)" placeholder="Attributes Quantity"/>
+                    <input ng-animate="'animate'" type="text" class="form-control" ng-repeat="attribute in newRegister.logAttributeNameDTOs"
+                           ng-model="newRegister.logAttributeNameDTOs[$index].name" placeholder="Attribute {{$index+1}} name"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="invalidRegisterMessage!=''" ng-click="addNewRegister(newRegister)" value="Add"/>
                     <b ng-show="invalidRegisterMessage != ''" style="color: red">{{invalidRegisterMessage}}</b>
                 </div>
@@ -49,8 +53,7 @@
     <hr/>
     <div class="row">
         <div class="col-md-4">
-            <select class="form-control" ng-options="register.registerName for register in registerNames"
-                    ng-model="registerName" ng-change="getLogRegistry()"></select>
+            <select class="form-control" ng-options="r.name for r in registerNames" ng-model="registerName" ng-change="getLogRegistry()"></select>
         </div>
         <div class="col-md-4">
             <input type="button" class="form-control" ng-click="getLogRegistry()" value="Refresh">
@@ -62,7 +65,6 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered table-striped">
-
                 <thead>
                 <tr>
                     <td>
@@ -101,27 +103,26 @@
                         </a>
                     </td>
 
-                    <td ng-repeat="a in atr">
+                    <td ng-repeat="attribute in registerName.logAttributeNameDTOs">
                         <a href="#" ng-click="sortType = a; sortReverse = !sortReverse">
-                            Attribute {{$index+1}}
+                            {{attribute.name}}
                             <span ng-show="sortType == a && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == a && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </td>
                 </tr>
                 </thead>
-
                 <tbody>
                 <tr ng-repeat="log in logs| orderBy:sortType:sortReverse | filter:searchLog">
                     <td>{{ log.id}}</td>
-                    <td>{{ log.logType}}</td>
+                    <td>{{ log.logTypeDTO.logType}}</td>
                     <td>{{ log.sourceId}}</td>
-                    <td>{{ log.logRegister}}</td>
+                    <td>{{ log.logRegisterDTO.name}}</td>
                     <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss Z'}}</td>
-                    <td ng-repeat="a in atr">{{ log[a]}}</td>
+                    <td ng-repeat="attribute in log.logAttributeDTOs">{{ attribute.value }}</td>
+                    <td><input type="button" class="form-control" value="Delete" ng-click="deleteLog(logs[$index])"/></td>
                 </tr>
                 </tbody>
-
             </table>
         </div>
     </div>
