@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="resources/css/style.css"/>
 </head>
 <body ng-controller="ctrl">
-<div class="container">
+<div class="container" style="width: 100%; padding-top: 0">
     <div class="row">
         <div class="col-md-4" ng-init="collapsedSendLog = true">
             <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog; isCollapsed=true; collapsedLogType=true;
@@ -32,8 +32,8 @@
             <div uib-collapse="isCollapsed">
                 <div class="well well-lg">
                     <input type="text" class="form-control" ng-model="newRegister.name" placeholder="Register Name" ng-change="validNewRegister(newRegister, attributesQuantity)"/>
-                    <input type="number" min="0" max="15" class="form-control" ng-model="attributesQuantity" ng-change="validNewRegister(newRegister, attributesQuantity)" placeholder="Attributes Quantity"/>
-                    <input ng-animate="'animate'" type="text" class="form-control" ng-repeat="attribute in newRegister.logAttributeNameDTOs"
+                    <input type="number" min="0" max="15" class="form-control" ng-model="attributesQuantity" ng-change="refreshNewRegisterInputs(newRegister, attributesQuantity);validNewRegister(newRegister, attributesQuantity)" placeholder="Attributes Quantity"/>
+                    <input ng-animate="'animate'" type="text" class="form-control" ng-repeat="attribute in newRegister.logAttributeNameDTOs" ng-change="validNewRegister(newRegister, attributesQuantity)"
                            ng-model="newRegister.logAttributeNameDTOs[$index].name" placeholder="Attribute {{$index+1}} name"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="invalidRegisterMessage!=''" ng-click="addNewRegister(newRegister)" value="Add"/>
                     <b ng-show="invalidRegisterMessage != ''" style="color: red">{{invalidRegisterMessage}}</b>
@@ -44,8 +44,8 @@
             <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=true; collapsedLogType=!collapsedLogType;" value="Add Log Type"/>
             <div uib-collapse="collapsedLogType">
                 <div class="well well-lg">
-                    <input type="text" class="form-control" ng-model="newType" placeholder="Log Type Name"/>
-                    <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="newType=='' || newType==undefined" ng-click="addLogType(newType)" value="Add "/>
+                    <input type="text" class="form-control" ng-model="newType.logType" placeholder="Log Type Name"/>
+                    <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="newType.logType=='' || newType.logType==undefined" ng-click="addLogType(newType)" value="Add "/>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
                     <td>{{ log.logRegisterDTO.name}}</td>
                     <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss Z'}}</td>
                     <td ng-repeat="attribute in log.logAttributeDTOs">{{ attribute.value }}</td>
-                    <td><input type="button" class="form-control" value="Delete" ng-click="deleteLog(logs[$index])"/></td>
+                    <td style="padding: 0; width: 70px"><input style="border: medium none" type="button" class="btn btn-primary" value="Delete" ng-click="deleteLog(logs[$index])"/></td>
                 </tr>
                 </tbody>
             </table>

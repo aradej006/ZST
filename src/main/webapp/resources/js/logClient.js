@@ -5,7 +5,6 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
     $scope.searchLog = '';     // set the default search/filter term
     $scope.registerNames = [];
     $scope.registerName = {};
-    $scope.invalidRegisterMessage = '';
 
     var logClient = {
         addLogType: function (logType) {
@@ -65,13 +64,11 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
         });
     };
 
-    $scope.addLogType = function (logTypeName) {
-        var newType = {
-            logType: logTypeName
-        };
+    $scope.addLogType = function (newType) {
         logClient.addLogType(newType).success(function (result) {
             $scope.getLogTypes();
         });
+        $scope.newType = {};
     };
 
     $scope.getRegisterNames = function () {
@@ -98,13 +95,21 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
                     $scope.getRegisterNames();
                 });
         }
+        $scope.newRegister = {};
+        $scope.invalidRegisterMessage = undefined;
+        $scope.attributesQuantity = 1;
     };
 
     $scope.validNewRegister = function (newRegistry, attributesQuantity) {
+        $scope.invalidRegisterMessage = '';
         if (newRegistry.name == undefined || newRegistry.name == '') $scope.invalidRegisterMessage = "Registry Name is required.";
         else if (attributesQuantity == undefined) $scope.invalidRegisterMessage = "Attributes Quantity must be between 1 to 15.";
-        else $scope.invalidRegisterMessage = '';
+        angular.forEach(newRegistry.logAttributeNameDTOs, function(attribute){
+            if(attribute.name == undefined || attribute.name == '') $scope.invalidRegisterMessage = "All attributes must be inserted."
+        });
+    };
 
+    $scope.refreshNewRegisterInputs = function(newRegistry, attributesQuantity){
         newRegistry.logAttributeNameDTOs = [];
         if (attributesQuantity != undefined && attributesQuantity > 0) {
             attributesQuantity = Math.floor(attributesQuantity);
@@ -114,8 +119,6 @@ angular.module('logClient').controller('ctrl', function ($scope, $http, $interva
                 }
             }
         }
-        console.log(newRegistry);
-
     };
 
     $scope.generateLog = function () {

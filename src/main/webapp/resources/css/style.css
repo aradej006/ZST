@@ -1,16 +1,22 @@
 body{
     background-color: #F5F5F5;
-    padding-top:50px;
+    font-size: 18px;
 }
 
 .form-control {
     border-color:  #639DCF;
     border-radius: 0;
+    padding: 0 12px;
+    font-size: 18px;
 }
 
 .btn-primary {
     border-radius: 0;
     background-color: #a29fa5;
+    border: 1px solid;
+    border-color: #639DCF;
+    font-size: 19px;
+
 }
 
 .input-group-addon {
