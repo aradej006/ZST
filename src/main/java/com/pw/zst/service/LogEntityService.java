@@ -8,12 +8,14 @@ import com.pw.zst.repositories.LogEntityRepository;
 import com.pw.zst.repositories.LogRegisterRepository;
 import com.pw.zst.repositories.LogTypeRepository;
 import com.pw.zst.translators.LogEntityTranslator;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.awt.print.Pageable;
 import java.util.LinkedList;
 import java.util.List;
 

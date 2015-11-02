@@ -1,12 +1,12 @@
 <!doctype html>
-<html ng-app="logClient">
+<html ng-app="logViewer">
 <head>
     <meta charset="UTF-8">
     <title>Log Viewer</title>
     <script src="resources/js/angular.min.js"></script>
     <script src="resources/js/angular-animate.min.js"></script>
     <script src="resources/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
-    <script src="resources/js/logClient.js"></script>
+    <script src="resources/js/logViewer.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="resources/css/style.css"/>
@@ -14,21 +14,8 @@
 <body ng-controller="ctrl">
 <div class="container" style="width: 100%; padding-top: 0">
     <div class="row">
-        <div class="col-md-4" ng-init="collapsedSendLog = true">
-            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=!collapsedSendLog; isCollapsed=true; collapsedLogType=true;
-            log.logTypeDTO=logTypes[0]; log.logRegisterDTO=registerNames[0];refreshAttr(log)" value="Send Log"/>
-            <div uib-collapse="collapsedSendLog">
-                <div class="well well-lg">
-                    <select class="form-control" ng-options="r.name for r in registerNames" ng-model="log.logRegisterDTO" ng-change="refreshAttr(log.logRegisterDTO)"></select>
-                    <input type="number" min="0" class="form-control" ng-model="log.sourceId" placeholder="SourceId"/>
-                    <select class="form-control" ng-options="t.logType for t in logTypes" ng-model="log.logTypeDTO"></select>
-                    <input ng-repeat="a in log.logRegisterDTO.logAttributeNameDTOs" ng-init="log.logAttributeDTOs=[]" type="text" class="form-control" ng-model="log.logAttributeDTOs[$index].value" placeholder="{{a.name}}"/>
-                    <input style="width:100%" type="button" class="btn btn-primary" ng-click="send(log)" value="Add"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4" ng-init="isCollapsed = true">
-            <input id="addRegister" type="button" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=!isCollapsed; collapsedLogType=true;" value="Add Register"/>
+        <div class="col-md-6" ng-init="isCollapsed = true">
+            <input id="addRegister" type="button" class="btn btn-primary" ng-click="isCollapsed=!isCollapsed; collapsedLogType=true;" value="Add Register"/>
             <div uib-collapse="isCollapsed">
                 <div class="well well-lg">
                     <input type="text" class="form-control" ng-model="newRegister.name" placeholder="Register Name" ng-change="validNewRegister(newRegister, attributesQuantity)"/>
@@ -37,15 +24,17 @@
                            ng-model="newRegister.logAttributeNameDTOs[$index].name" placeholder="Attribute {{$index+1}} name"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="invalidRegisterMessage!=''" ng-click="addNewRegister(newRegister)" value="Add"/>
                     <b ng-show="invalidRegisterMessage != ''" style="color: red">{{invalidRegisterMessage}}</b>
+                    <span style="color: {{addNewRegisterMsg.color}}"><b>{{addNewRegisterMsg.value}}</b></span>
                 </div>
             </div>
         </div>
-        <div class="col-md-4" ng-init="collapsedLogType = true">
-            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="collapsedSendLog=true; isCollapsed=true; collapsedLogType=!collapsedLogType;" value="Add Log Type"/>
+        <div class="col-md-6" ng-init="collapsedLogType = true">
+            <input type="button" style="width: 100%" class="btn btn-primary" ng-click="isCollapsed=true; collapsedLogType=!collapsedLogType;" value="Add Log Type"/>
             <div uib-collapse="collapsedLogType">
                 <div class="well well-lg">
                     <input type="text" class="form-control" ng-model="newType.logType" placeholder="Log Type Name"/>
                     <input style="width:100%" type="button" class="btn btn-primary" ng-disabled="newType.logType=='' || newType.logType==undefined" ng-click="addLogType(newType)" value="Add "/>
+                    <span style="color: {{addLogTypeMsg.color}}"><b>{{addLogTypeMsg.value}}</b></span>
                 </div>
             </div>
         </div>
@@ -118,7 +107,7 @@
                     <td>{{ log.logTypeDTO.logType}}</td>
                     <td>{{ log.sourceId}}</td>
                     <td>{{ log.logRegisterDTO.name}}</td>
-                    <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss Z'}}</td>
+                    <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss.sss'}}</td>
                     <td ng-repeat="attribute in log.logAttributeDTOs">{{ attribute.value }}</td>
                     <td style="padding: 0; width: 70px"><input style="border: medium none" type="button" class="btn btn-primary" value="Delete" ng-click="deleteLog(logs[$index])"/></td>
                 </tr>

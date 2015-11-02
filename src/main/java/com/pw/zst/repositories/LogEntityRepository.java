@@ -5,7 +5,6 @@ import com.pw.zst.entities.LogRegister;
 import com.pw.zst.entities.LogType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sun.rmi.runtime.Log;
 
 import java.util.Date;
 import java.util.List;
