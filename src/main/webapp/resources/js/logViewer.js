@@ -95,7 +95,7 @@ angular.module('logViewer').controller('ctrl',function ($scope, $http, $timeout)
                 .success(function (response) {
                     $scope.getRegisterNames();
                     $scope.addNewRegisterMsg.value = 'Added';
-                    $scope.addNewRegisterMsg.value = 'green';
+                    $scope.addNewRegisterMsg.color = 'green';
                     $timeout(function(){$scope.addNewRegisterMsg.value = ''}, timeout);
                 }).error(function(error){
                     $scope.addNewRegisterMsg.value = 'Error while adding new register';

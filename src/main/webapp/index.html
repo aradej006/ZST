@@ -64,11 +64,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#" ng-click="sortType = 'logType'; sortReverse = !sortReverse">
-                            Log Type
-                            <span ng-show="sortType == 'logType' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'logType' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
+                        Log Type
                     </td>
                     <td>
                         <a href="#" ng-click="sortType = 'sourceId'; sortReverse = !sortReverse">
@@ -78,11 +74,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#" ng-click="sortType = 'logRegister'; sortReverse = !sortReverse">
-                            Log Register
-                            <span ng-show="sortType == 'logRegister' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'logRegister' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
+                        Log Register
                     </td>
                     <td>
                         <a href="#" ng-click="sortType = 'logDate'; sortReverse = !sortReverse">
@@ -93,11 +85,7 @@
                     </td>
 
                     <td ng-repeat="attribute in registerName.logAttributeNameDTOs">
-                        <a href="#" ng-click="sortType = a; sortReverse = !sortReverse">
                             {{attribute.name}}
-                            <span ng-show="sortType == a && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == a && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
                     </td>
                 </tr>
                 </thead>
@@ -107,7 +95,7 @@
                     <td>{{ log.logTypeDTO.logType}}</td>
                     <td>{{ log.sourceId}}</td>
                     <td>{{ log.logRegisterDTO.name}}</td>
-                    <td>{{ log.logDate | date : 'dd-MM-yyyy HH:mm:ss.sss'}}</td>
+                    <td>{{ log.logDate | date : 'yyyy-MM-dd HH:mm:ss.sss'}}</td>
                     <td ng-repeat="attribute in log.logAttributeDTOs">{{ attribute.value }}</td>
                     <td style="padding: 0; width: 70px"><input style="border: medium none" type="button" class="btn btn-primary" value="Delete" ng-click="deleteLog(logs[$index])"/></td>
                 </tr>
